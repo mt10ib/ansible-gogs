@@ -11,8 +11,8 @@
     - debug:
         msg: "main-gogs"
 
-    # - include: nginx.yml
     - include: user.yml
+    - include: nginx.yml
     - include: dependencies.yml
     - include: db.yml
     - include: app.yml

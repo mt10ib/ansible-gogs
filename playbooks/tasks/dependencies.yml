@@ -1,9 +1,5 @@
 ---
 
-# install nginx 
-- name: Make sure nginx setup
-  apt: pkg=nginx state=installed update_cache=true
-
 # install uzip 
 - name: make sure unzip is install 
   apt: pkg=unzip state=installed

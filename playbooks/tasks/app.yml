@@ -68,5 +68,8 @@
 
 
 - name: Ensure Gogs is running.
-  service: name=gogs state=started enabled=yes
+  service: 
+    name: gogs
+    state: started 
+    enabled: yes
   become: true
