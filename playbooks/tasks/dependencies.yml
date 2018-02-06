@@ -18,9 +18,3 @@
 - name: make sure systemd is install 
   apt: pkg=systemd state=installed
 
-
-# install sqlite
-- name: install sqlite
-  apt: 
-    name: sqlite3
-    state: installed

@@ -6,5 +6,4 @@
 
 vars:
   - MyMessage: "Welcome to Ansible Assignment!"
-  - AMessage: "Thanks everyone for helping me with this mission, Looking forward to seeing you all at the office!"
-  - BMessage: "Of course, this is not all, just to show I was able to get a VM up and runing. Also, able to deploy this using Ansible "
+ 

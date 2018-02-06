@@ -13,4 +13,3 @@
     groups: "sudo,admin,git"
     password: gitgogs
     comment: git
-  # sudo: yes

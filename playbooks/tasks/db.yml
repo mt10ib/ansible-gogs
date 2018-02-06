@@ -4,3 +4,23 @@
   apt: 
     name: sqlite3
     state: installed
+
+- name: create sqlite dir
+  file:
+    path: /home/git/gogs/data
+    owner: git
+    group: git
+    mode: 0755
+    state: directory
+  sudo: yes
+  sudo_user: git
+
+- name: Create gogs log folder
+  file:
+    path: /home/git/gogs/log
+    state: directory
+    owner: git
+    group: git
+    mode: 0755
+  sudo: yes
+  sudo_user: git

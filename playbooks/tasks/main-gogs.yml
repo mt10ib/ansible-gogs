@@ -11,12 +11,14 @@
     - debug:
         msg: "main-gogs"
 
-    - include: nginx.yml
-    - include: db.yml
-    - include: dependencies.yml
+    # - include: nginx.yml
     - include: user.yml
+    - include: dependencies.yml
+    - include: db.yml
     - include: app.yml
-    - include: app.yml
+
+
+# ansible-playbook -i ansible.cfg -s -u ubuntu /home/mohan/Desktop/ansibleAssign/main.yml --private-key /home/mohan/.ssh/ans-gogs
 
 
         
