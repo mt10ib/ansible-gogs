@@ -1,0 +1,22 @@
+---
+
+# playbook for Gogs
+- hosts: all
+  sudo: yes
+
+  # roles:
+  #   - nginx
+    
+  tasks:
+    - debug:
+        msg: "main-gogs"
+
+    - include: nginx.yml
+    - include: db.yml
+    - include: dependencies.yml
+    - include: user.yml
+    - include: app.yml
+    - include: app.yml
+
+
+        

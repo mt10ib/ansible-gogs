@@ -1,0 +1,16 @@
+---
+
+- name: Create git group 
+  group:
+    name: "git"
+    state: present
+
+- name: Create a user 'git' for Gogs.
+  user:
+    name: "git"
+    state: present
+    home: /home/git
+    groups: "sudo,admin,git"
+    password: gitgogs
+    comment: git
+  # sudo: yes

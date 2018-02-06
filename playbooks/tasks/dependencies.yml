@@ -1,0 +1,26 @@
+---
+
+# install nginx 
+- name: Make sure nginx setup
+  apt: pkg=nginx state=installed update_cache=true
+
+# install uzip 
+- name: make sure unzip is install 
+  apt: pkg=unzip state=installed
+
+
+# install git
+- name: make sure git is install 
+  apt: pkg=git state=installed
+
+
+# install systemd
+- name: make sure systemd is install 
+  apt: pkg=systemd state=installed
+
+
+# install sqlite
+- name: install sqlite
+  apt: 
+    name: sqlite3
+    state: installed

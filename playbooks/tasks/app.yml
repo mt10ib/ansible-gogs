@@ -1,0 +1,80 @@
+---
+
+- name: Create custom conf directory
+  file: 
+  # path: /home/git/gogs/custom/conf 
+    path: /etc/gogs/conf 
+    state: directory 
+    mode: 0755
+  sudo: yes
+  sudo_user: git
+
+
+- name: copy app.init
+  template:
+    src: /home/mohan/Desktop/ansibleAssign/playbooks/templates/app.ini
+    # dest: /home/git/gogs/custom/conf/app.ini
+    dest: /etc/gogs/conf/app.ini
+    owner: git
+    group: git
+    mode: 0755
+  sudo: yes
+  sudo_user: git
+
+
+# download gogs excutalble 
+- name: Dowload exutalbe Gogs
+  get_url:
+    url: " https://dl.gogs.io/0.11.34/linux_amd64.tar.gz"
+    dest: "/home/git/gogs.zip"
+    owner: "git"
+    group: "git"
+  sudo: yes
+  sudo_user: git
+
+
+# unzip and place it in gogs user directory
+- name: unzip gogs.zip
+  unarchive:
+    src: /home/git/gogs.zip
+    dest: /home/git/
+    owner: "git"
+    group: "git"
+    copy: no
+  sudo: yes
+  sudo_user: git
+
+
+# copy gogs.service file for systemd
+- name: copy gogs.service file for systemd
+  command: cp /home/git/gogs/scripts/systemd/gogs.service  /etc/systemd/system/
+  become: true
+  mode: 0755
+      
+
+
+# - name: Go to the folder and run 
+#   command: /home/ubuntu/gogs/gogs web &
+#   become: true
+
+
+- name: Create gogs log folder
+  file:
+    path: /home/git/gogs/log
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+
+- name: Start Gogs
+  systemd: 
+    state: started
+    name: gogs
+    daemon_reload: yes
+  become: true
+
+
+- name: Ensure Gogs is running.
+  service: name=gogs state=started enabled=yes
+  become: true

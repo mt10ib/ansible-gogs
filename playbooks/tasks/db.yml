@@ -1,0 +1,6 @@
+---
+
+- name: install sqlite
+  apt: 
+    name: sqlite3
+    state: installed

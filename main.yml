@@ -1,0 +1,252 @@
+---
+- hosts: all  # Run on all host listed on hostfiles
+  # user: git
+  sudo: yes
+
+
+#### Steps to be performed #####
+# create a non-root account, group and user 
+# make sure unzip is install
+# make sure Gogs already not  installed 
+# Download the file from git page 
+# move the file to /home/ubuntu/gogs
+# use the systemd plugin to set it to start at startup
+
+  # Creaing a non-root user for Gogs
+
+
+  tasks:
+  
+
+    # remove /home/git
+    - name: remove /home/git
+      command: rm -rf /home/git
+      become: true
+
+
+    - name: create git group 
+      group:
+        name: "git"
+        state: present
+
+    - name: Create a user 'git' for Gogs.
+      user:
+        name: "git"
+        state: present
+        home: /home/git
+        groups: "sudo,admin,git"
+        password: gitgogs
+        comment: git
+      # sudo: yes
+
+    # install nginx 
+    - name: Make sure nginx setup
+      apt: pkg=nginx state=installed update_cache=true
+
+
+        # install uzip 
+    - name: make sure unzip is install 
+      apt: pkg=unzip state=installed
+      # when: unzip_check.stdout.find('no package found') != -1
+
+
+    # git is a dependency, install git
+    - name: make sure git is install 
+      apt: pkg=git state=installed
+      # when: git_check.stdout.find('no package found') != -1
+
+
+    # install systemd
+    - name: make sure systemd is install 
+      apt: pkg=systemd state=installed
+      # when: unzip_check.stdout.find('no package found') != -1
+
+    
+    - name: install sqlite
+      apt: 
+        name: sqlite3
+        state: installed
+
+
+    - name: create sqlite dir
+      file:
+        path: /home/git/gogs/data
+        owner: git
+        group: git
+        mode: 0755
+        state: directory
+      sudo: yes
+      sudo_user: git
+
+
+    - name: Create gogs log folder
+      file:
+        path: /home/git/gogs/log
+        state: directory
+        owner: git
+        group: git
+        mode: 0755
+      sudo: yes
+      sudo_user: git
+
+
+
+    - name: Create custom conf directory
+      # file: path=/home/git/gogs/custom/conf state=directory mode=0755
+      file: path=/etc/gogs/conf state=directory mode=0755
+      sudo: yes
+      sudo_user: git
+
+    - name: copy app.init
+      template:
+        src: /home/mohan/Desktop/ansibleAssign/playbooks/templates/app.ini
+        # dest: /home/git/gogs/custom/conf/app.ini
+        dest: /etc/gogs/conf/app.ini
+        owner: git
+        group: git
+        mode: 0755
+      sudo: yes
+      sudo_user: git
+
+
+
+
+  
+      # - include: gogs-db.yml
+    
+
+    # download gogs excutalble 
+    - name: Dowload exutalbe Gogs
+      get_url:
+        url: " https://dl.gogs.io/0.11.34/linux_amd64.tar.gz"
+        dest: "/home/git/gogs.zip"
+        owner: "git"
+        group: "git"
+      sudo: yes
+      sudo_user: git
+
+
+    # unzip and place it in gogs user directory
+    - name: unzip gogs.zip
+      unarchive:
+        src: /home/git/gogs.zip
+        dest: /home/git/
+        owner: "git"
+        group: "git"
+        copy: no
+      sudo: yes
+      sudo_user: git
+
+
+    # copy gogs.service file for systemd
+    - name: copy gogs.service file for systemd
+      command: cp /home/git/gogs/scripts/systemd/gogs.service  /etc/systemd/system/
+      become: true
+      mode: 0755
+      
+
+
+    # - name: Go to the folder and run 
+    #   command: /home/ubuntu/gogs/gogs web &
+    #   become: true
+
+    - name: Start Gogs
+      systemd: 
+        state: started
+        name: gogs
+        daemon_reload: yes
+        masked: no 
+      become: true
+
+
+    - name: Ensure Gogs is running.
+      service: name=gogs state=started enabled=yes
+      become: true
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    # - name: creat custom dir
+    #   file: path=/home/git/gogs/custom/conf state=directory mode=755
+    #   sudo: yes
+
+
+
+
+    # - file:
+    #     path: /home/ubuntu/gogs/gogs
+    #     owner: root
+    #     group: root
+    #     mode: 0755
+
+    # # - name: copy gogs to /usr/local/bin/gogs
+    #   # sudo: yes
+    # - copy: 
+    #     src: /home/ubuntu/gogs/gogs/
+    #     dest: /lib/systemd/system/gogs
+    #     owner: "root"
+    #     group: "root"
+    #     mode: 0774
+
+
+    #   notify:
+    #     - reload systemd
+    #     - restart gogs
+    #   become: true
+      
+
+
+
+
+
+
+
+    # - name: symlink gogs binary
+    #   file:
+    #     src: /home/ubuntu/gogs/gogs
+    #     dest: /usr/local/bin/gogs
+    #     state:  link
+
+    # - name: gogs systemd service is available
+    #   copy:
+    #     remote_src: true
+    #     src: '/home/ubuntu/gogs/scripts/systemd/gogs.service'
+    #     dest: '/etc/systemd/system/gogs.service'
+    #     mode: 0755
+
+
+    # - name: Ensure Gogs is running.
+    #   service: name=gogs state=started enabled=yes
+
+    # - name: gogs service enabled
+    #   service:
+    #     name: gogs
+    #     enabled: true
+    #   notify: restart gogs
+
+
+
+
+
