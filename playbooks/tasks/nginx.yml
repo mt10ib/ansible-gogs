@@ -1,8 +1,5 @@
 ---
 
-# - name: html copy
-#   template: src=html.j2 dest=/usr/share/nginx/html/index.html
-
 # install nginx 
 - name: Make sure to install nginx
   apt: pkg=nginx state=installed update_cache=true
@@ -35,7 +32,6 @@
   sudo: yes
   sudo_user: git
 
-
 # Activate the reverse proxy
 - name: copy gogs.service file for systemd
   file:
@@ -45,23 +41,16 @@
   mode: 0755
 
 
-
-
-
 # copy ngnix.service file for systemd
 - name: copy nginx.service file for systemd
   template:
     src:  /home/mohan/Desktop/ansible-gogs/playbooks/templates/nginx.service
     dest: /etc/systemd/system/
-  # command: cp /etc/nginx/sites-available/gogs  /etc/systemd/system/nginx
-  # command: cp /etc/nginx/sites-available/gogs /lib/systemd/system/nginx.service
     owner: "git"
     group: "git"
     mode: 0755
   sudo: yes
   sudo_user: git
-  # become: true
-  # mode: 0755
 
 - name: Reload nginx systemd service
   systemd: 
@@ -76,8 +65,4 @@
     state: started 
     enabled: yes
   become: true 
-
-# - name: restart nginx
-#   service: name=nginx  state=restarted
-
  
