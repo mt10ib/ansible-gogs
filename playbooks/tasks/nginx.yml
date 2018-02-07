@@ -1,8 +1,5 @@
 ---
 
-# install nginx 
-- name: Make sure to install nginx
-  apt: pkg=nginx state=installed update_cache=true
 
 - name: create ngnix dir
   file:
@@ -24,7 +21,6 @@
 - name: copy gogs to /etc/nginx
   template:
     src: /home/mohan/Desktop/ansible-gogs/playbooks/templates/gogs
-    # dest: /home/git/gogs/custom/conf/app.ini  # Was included in the binary in the latest gogs
     dest: /etc/nginx/sites-available/gogs
     owner: "git"
     group: "git"

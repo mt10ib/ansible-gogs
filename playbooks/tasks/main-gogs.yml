@@ -8,13 +8,16 @@
   #   - nginx
     
   tasks:
- 
-     # populate ansible.cfg
-    - local_action: command  /home/mohan/Desktop/ansible-gogs/writehosts.sh
+
+    # Provision an instance 
+    - local_action: script /home/mohan/Desktop/ansible-gogs/run.sh
+
+    # populate ansible.cfg
+    - local_action: script /home/mohan/Desktop/ansible-gogs/writehosts.sh
                 
     - include: user.yml
-    - include: nginx.yml
     - include: dependencies.yml
+    - include: nginx.yml
     - include: db.yml
     - include: app.yml
 

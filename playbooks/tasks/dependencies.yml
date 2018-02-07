@@ -1,5 +1,19 @@
 ---
 
+# Update and upgrade apt packages
+- name: Update and upgrade apt packages
+  apt:
+    upgrade: yes
+    update_cache: yes
+    cache_valid_time: 86400 #One day
+  become: true
+
+
+# install nginx 
+- name: Make sure to install nginx
+  apt: pkg=nginx state=installed update_cache=true
+
+  
 # install uzip 
 - name: make sure unzip is install 
   apt: pkg=unzip state=installed
