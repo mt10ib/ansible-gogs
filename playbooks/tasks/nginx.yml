@@ -36,12 +36,22 @@
   become: true
   mode: 0755
 
+# Configure snippet points for ssl 
+- name: create snippet dir
+  file:
+    path: /etc/nginx/snippets/
+    owner: git
+    group: git
+    mode: 0755
+    state: directory
+  sudo: yes
+  sudo_user: git
 
 # copy ngnix.service file for systemd
 - name: copy nginx.service file for systemd
   template:
-    src:  /home/mohan/Desktop/ansible-gogs/playbooks/templates/nginx.service
-    dest: /etc/systemd/system/
+    src:  /home/mohan/Desktop/ansible-gogs/playbooks/templates/self-signed.conf
+    dest: /etc/nginx/snippets/self-signed.conf
     owner: "git"
     group: "git"
     mode: 0755

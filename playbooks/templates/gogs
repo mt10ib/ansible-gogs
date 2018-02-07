@@ -7,3 +7,16 @@ server {
     }
 }
 
+
+server {  
+    listen 443 ssl;
+    server_name	localhost;
+    include snippets/self-signed.conf;
+    include snippets/ssl-params.conf;
+    #ssl_certificate etc/ssl/certs/nginx-selfsigned.crt;
+    #ssl_certificate_key /etc/ssl/private/nginx-selfsigned.key;
+
+    location / {
+        proxy_pass http://localhost:3000;
+    }
+}
