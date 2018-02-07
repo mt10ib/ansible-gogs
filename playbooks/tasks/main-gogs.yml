@@ -8,9 +8,10 @@
   #   - nginx
     
   tasks:
-    - debug:
-        msg: "main-gogs"
-
+ 
+     # populate ansible.cfg
+    - local_action: command  /home/mohan/Desktop/ansible-gogs/writehosts.sh
+                
     - include: user.yml
     - include: nginx.yml
     - include: dependencies.yml
